@@ -1,22 +1,6 @@
-- name: Download Node Exporter
-  get_url:
-    url: "https://github.com/prometheus/node_exporter/releases/download/{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
-    dest: "/tmp/node_exporter.tar.gz"
-
-- name: Extract Node Exporter
-  ansible.builtin.unarchive:
-    src: "/tmp/node_exporter.tar.gz"
-    dest: "/usr/local/bin/"
-    remote_src: yes
-
-- name: Copy Systemd Service
-  template:
-    src: node_exporter.service.j2
-    dest: /etc/systemd/system/node_exporter.service
-
-- name: Enable and Start Node Exporter
+- name: Restart node_exporter
   systemd:
     name: node_exporter
+    state: restarted
     enabled: yes
-    state: started
     daemon_reload: yes

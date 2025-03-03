@@ -1,6 +1,6 @@
 - name: Download Node Exporter
   get_url:
-    url: "https://github.com/prometheus/node_exporter/releases/download/{{ node_exporter_version }}/node_exporter-{{ node_exporter_version }}.linux-amd64.tar.gz"
+    url: "https://github.com/prometheus/node_exporter/releases/download/v1.9.0/node_exporter-1.9.0.linux-amd64.tar.gz"
     dest: "/tmp/node_exporter.tar.gz"
 
 - name: Extract Node Exporter
@@ -9,10 +9,14 @@
     dest: "/usr/local/bin/"
     remote_src: yes
 
-- name: Copy Systemd Service
+- name: Copy Node Exporter systemd service file
   template:
     src: node_exporter.service.j2
     dest: /etc/systemd/system/node_exporter.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart node_exporter
 
 - name: Enable and Start Node Exporter
   systemd:
