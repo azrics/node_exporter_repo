@@ -10,6 +10,13 @@
     remote_src: yes
     extra_opts: [--strip-components=1]
 
+- name: Create node_exporter user
+  ansible.builtin.user:
+    name: node_exporter
+    system: yes
+    shell: /usr/sbin/nologin
+    create_home: no
+
 - name: Copy Node Exporter systemd service file
   template:
     src: node_exporter.service.j2
